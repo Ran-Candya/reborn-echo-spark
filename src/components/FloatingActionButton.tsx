@@ -40,7 +40,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ onOp
             type="button"
             onClick={() => onOpenBooking()}
             className="group relative flex min-h-12 items-center gap-2 px-3.5 py-2.5 sm:gap-3 sm:px-5 sm:py-3 rounded-full bg-[#2D241E] hover:bg-[#3E3228] text-[#FDFBF7] shadow-[0_8px_24px_rgba(45,36,30,0.22)] border border-[#E0A97E]/30 transition-all hover:scale-105 active:scale-95 cursor-pointer"
-            aria-label="Réserver un appel découverte de 20 minutes offert"
+            aria-label="Réserver un appel découverte de 30 minutes offert"
           >
             {/* Status dot pulse */}
             <span className="flex h-2.5 w-2.5 relative shrink-0">
@@ -51,7 +51,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({ onOp
             {/* Label text */}
             <div className="flex flex-col text-left leading-none">
               <span className="text-xs font-bold tracking-tight text-[#FDFBF7] flex items-center gap-1.5">
-                <span>Échange 20 min</span>
+                <span>Échange 30 min</span>
                 <span className="text-[10px] font-semibold text-[#E0A97E] uppercase tracking-wider bg-[#3E3228] px-1.5 py-0.5 rounded-sm">
                   Offert
                 </span>

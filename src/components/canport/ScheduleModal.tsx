@@ -130,7 +130,7 @@ export const ScheduleModal: React.FC<ScheduleModalProps> = ({ isOpen, onClose, o
                 className="w-full sm:flex-1 py-3 px-5 rounded-full bg-[#2D241E] hover:bg-[#3E3228] text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-[#E0A97E]" />
-                <span>Réserver un créneau (20 min offertes)</span>
+                <span>Réserver un créneau (30 min offertes)</span>
                 <ArrowRight className="w-3.5 h-3.5 text-[#E0A97E]" />
               </button>
               <a

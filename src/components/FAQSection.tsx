@@ -7,11 +7,11 @@ interface FAQSectionProps {
 
 const FAQS = [
   {
-    q: "Que se passe-t-il exactement durant l'échange de 20 minutes ?",
+    q: "Que se passe-t-il exactement durant l'échange de 30 minutes ?",
     a: "Nous nous connectons en visioconférence (Google Meet). Vous nous partagez votre écran ou nous fournissez l'URL de votre produit. En direct, nous décortiquons vos écrans clés (landing, onboarding, tunnel d'achat), relevons les blocages perceptuels et vous livrons 3 actions concrètes pour débloquer votre fluidité."
   },
   {
-    q: "L'audit de 20 minutes est-il véritablement 100% gratuit et sans engagement ?",
+    q: "L'audit de 30 minutes est-il véritablement 100% gratuit et sans engagement ?",
     a: "Oui, totalement. Aucun moyen de paiement n'est demandé. C'est notre meilleure manière de vous prouver la pertinence de notre méthodologie Fluid UI. À l'issue de l'appel, vous êtes libre d'appliquer nos conseils seul ou de nous confier un sprint d'optimisation."
   },
   {
@@ -35,7 +35,7 @@ export function FAQSection({ onOpenBooking }: FAQSectionProps) {
             Transparence totale
           </span>
           <h2 className="text-2xl sm:text-4xl font-serif text-[#241F1A] font-medium tracking-tight">
-            Questions fréquentes sur l'audit 20 min
+            Questions fréquentes sur l'audit 30 min
           </h2>
           <p className="mt-3 text-sm sm:text-base text-[#6E6153]">
             Tout ce que vous devez savoir avant de réserver votre créneau.
@@ -86,7 +86,7 @@ export function FAQSection({ onOpenBooking }: FAQSectionProps) {
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-[#5C4D3E] hover:bg-[#473B2F] text-white text-xs sm:text-sm font-medium transition-colors cursor-pointer shadow-sm"
           >
             <Sparkles className="w-4 h-4" />
-            <span>Réserver un échange de 20 min</span>
+            <span>Réserver un échange de 30 min</span>
           </button>
         </div>
       </div>

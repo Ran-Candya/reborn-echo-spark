@@ -150,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, onOpenSchedule })
           <div className="flex shrink-0 items-center gap-1 sm:gap-2 lg:order-3">
             <button
               type="button"
-              onClick={() => onOpenBooking?.('Diagnostic Découverte (20 min offertes)')}
+              onClick={() => onOpenBooking?.('Diagnostic Découverte (30 min offertes)')}
               className="hidden sm:inline-flex items-center gap-2 px-3.5 sm:px-4.5 py-2 sm:py-2.5 rounded-full text-xs font-bold text-[#FDFBF7] bg-[#2D241E] hover:bg-[#3E3228] active:scale-95 shadow-sm hover:shadow-md transition-all cursor-pointer group"
             >
               <Calendar className="w-3.5 h-3.5 text-[#E0A97E] group-hover:rotate-12 transition-transform duration-300" />
@@ -231,7 +231,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, onOpenSchedule })
                         Disponibilités & Horaires
                       </span>
                       <span className="block text-[10px] leading-relaxed text-emerald-800">
-                        Mar (08h-12h) • Mer (09h-15h) • Jeu (09h-12h)
+                        Mar (08h-11h30) • Mer (09h-14h30) • Jeu (09h-11h30)
                       </span>
                     </div>
                   </div>
@@ -245,12 +245,12 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenBooking, onOpenSchedule })
                   type="button"
                   onClick={() => {
                     setMobileMenuOpen(false);
-                    onOpenBooking?.('Diagnostic Découverte (20 min offertes)');
+                    onOpenBooking?.('Diagnostic Découverte (30 min offertes)');
                   }}
                   className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl text-sm font-bold text-[#FDFBF7] bg-[#2D241E] hover:bg-[#3E3228] active:scale-95 shadow-sm transition-all cursor-pointer"
                 >
                   <Calendar className="w-4 h-4 text-[#E0A97E]" />
-                  <span>Prendre RDV • Appel gratuit 20 min</span>
+                  <span>Prendre RDV • Appel gratuit 30 min</span>
                   <ArrowRight className="w-4 h-4 opacity-80" />
                 </button>
               </div>

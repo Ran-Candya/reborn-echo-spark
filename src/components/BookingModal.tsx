@@ -11,12 +11,13 @@ interface BookingModalProps {
 }
 
 const pad = (n: number) => String(n).padStart(2, '0');
-const SLOT_MINUTES = 20;
+const SLOT_MINUTES = 30;
 
-/** Consecutive 20-minute slots between start and end hour (EAT). */
-function makeSlots(startH: number, endH: number) {
+/** Consecutive 30-minute slots between the start and end time (EAT). */
+function makeSlots(startH: number, endH: number, endM = 0) {
   const out: string[] = [];
-  for (let m = startH * 60; m + SLOT_MINUTES <= endH * 60; m += SLOT_MINUTES) {
+  const end = endH * 60 + endM;
+  for (let m = startH * 60; m + SLOT_MINUTES <= end; m += SLOT_MINUTES) {
     const e = m + SLOT_MINUTES;
     out.push(`${pad(Math.floor(m / 60))}:${pad(m % 60)} - ${pad(Math.floor(e / 60))}:${pad(e % 60)}`);
   }
@@ -25,9 +26,9 @@ function makeSlots(startH: number, endH: number) {
 
 // Candya's weekly availability (East Africa Time, UTC+3). Key = weekday (2=Tue, 3=Wed, 4=Thu).
 const WEEKLY_SLOTS: Record<number, { label: string; hours: string; slots: string[] }> = {
-  2: { label: 'Mardi', hours: '08:00 - 12:00', slots: makeSlots(8, 12) },
-  3: { label: 'Mercredi', hours: '09:00 - 15:00', slots: makeSlots(9, 15) },
-  4: { label: 'Jeudi', hours: '09:00 - 12:00', slots: makeSlots(9, 12) },
+  2: { label: 'Mardi', hours: '08:00 - 11:30', slots: makeSlots(8, 11, 30) },
+  3: { label: 'Mercredi', hours: '09:00 - 14:30', slots: makeSlots(9, 14, 30) },
+  4: { label: 'Jeudi', hours: '09:00 - 11:30', slots: makeSlots(9, 11, 30) },
 };
 const EAT_OFFSET_MS = 3 * 3600 * 1000;
 const MONTHS = ['Janv.', 'Févr.', 'Mars', 'Avr.', 'Mai', 'Juin', 'Juil.', 'Août', 'Sept.', 'Oct.', 'Nov.', 'Déc.'];
@@ -216,7 +217,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, ini
             <div className="clear-both sm:clear-none">
               <div className="flex items-start gap-2 pr-1 text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-[#7A583E] mb-2">
                 <span className="mt-1 w-2 h-2 rounded-full bg-[#A87C51]" />
-                <span>Échange découverte • 20 minutes offertes</span>
+                <span>Échange découverte • 30 minutes offertes</span>
               </div>
               <h3 className="text-xl sm:text-2xl font-extrabold text-[#2D241E] tracking-tight pr-10">
                 Planifiez votre appel avec Candya
@@ -297,7 +298,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ isOpen, onClose, ini
                 </fieldset>
 
                 <div className="mt-5 p-3 rounded-xl bg-[#F0EAE0]/70 border border-[#E4D9CC] grid grid-cols-1 gap-2 sm:flex sm:items-center sm:justify-between text-[11px] text-[#635345]">
-                  <div className="flex items-center gap-1.5 font-medium"><Clock className="w-3.5 h-3.5 text-[#7A583E]" /><span>20 min chrono</span></div>
+                  <div className="flex items-center gap-1.5 font-medium"><Clock className="w-3.5 h-3.5 text-[#7A583E]" /><span>30 min chrono</span></div>
                   <div className="flex items-center gap-1.5 font-medium"><ShieldCheck className="w-3.5 h-3.5 text-[#7A583E]" /><span>100% offert & sans engagement</span></div>
                 </div>
 

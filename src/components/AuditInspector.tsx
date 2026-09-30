@@ -229,8 +229,8 @@ export function AuditInspector({ onOpenBooking }: AuditInspectorProps) {
 
               {/* Explanation of audit findings */}
               <div className="mt-6 p-4 rounded-xl bg-white/60 border border-[#EFE9E0] text-xs text-[#6E6357]">
-                <strong className="text-[#3A3229] block mb-1">Ce que révèle l'échange de 20 minutes :</strong>
-                En seulement 20 minutes de visio partagée, nous passons au crible la gestuelle, les temps de réponse visuelle et les zones de doute de vos visiteurs pour vous remettre 3 correctifs directement applicables par vos développeurs ou designers.
+                <strong className="text-[#3A3229] block mb-1">Ce que révèle l'échange de 30 minutes :</strong>
+                En seulement 30 minutes de visio partagée, nous passons au crible la gestuelle, les temps de réponse visuelle et les zones de doute de vos visiteurs pour vous remettre 3 correctifs directement applicables par vos développeurs ou designers.
               </div>
             </div>
 
@@ -241,7 +241,7 @@ export function AuditInspector({ onOpenBooking }: AuditInspectorProps) {
                 onClick={onOpenBooking} 
                 className="font-medium text-[#5C4D3E] hover:underline cursor-pointer"
               >
-                Bloquer un créneau 20 min →
+                Bloquer un créneau 30 min →
               </button>
             </div>
           </div>

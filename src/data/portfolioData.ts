@@ -22,9 +22,9 @@ export const portfolioProfile = {
     "J'apporte de l'ordre, de la rigueur et une touche humaine là où tout semble déborder. Libérez-vous de l'administratif pour vous consacrer pleinement à ce qui vous fait vibrer.",
   about: {
     bioParagraph1:
-      "Je m'appelle Candya Randriamanarina, assistante virtuelle indépendante. J'aime profondément ce que je fais : apporter de l'ordre là où tout semble déborder, et donner à celles et ceux que j'accompagne la liberté de se recentrer sur ce qui compte vraiment pour eux.",
+      "Je m'appelle Candya Randriamanarina, assistante virtuelle indépendante. Si tu es coach ou formateur·rice en ligne, je suis là pour t'aider à retrouver de l'air dans ton quotidien : apporter de l'ordre là où tout déborde, et te redonner la liberté de te recentrer sur l'essentiel. Aujourd'hui, je gère déjà l'ensemble de l'administratif d'une agence de 5 coachs — un vrai gage de fiabilité, même à plus grande échelle.",
     bioParagraph2:
-      "Je suis spécialisée dans l'organisation administrative et le support client écrit, pour les coachs et formateurs en ligne. Concrètement, je m'occupe de ta boîte mail, de ton agenda, du suivi de tes élèves, de ta facturation et de chaque échange avec eux pour que tu puisses te consacrer pleinement à ce qui te fait vibrer : créer, vendre, coacher.",
+      "Concrètement, je prends en charge ta boîte mail, ton agenda, le suivi de tes élèves, ta facturation et tes échanges clients — avec rigueur et réactivité, pour que tu te consacres pleinement à ce qui te fait vibrer : créer, vendre, coacher.",
     bioParagraph3:
       "Ce qui me distingue, ce n'est pas seulement ma rigueur, c'est la façon dont je m'implique. Je prends le temps de comprendre ta façon de fonctionner, et je m'adapte à toi, jamais l'inverse. Chaque message, chaque client, chaque détail est traité avec la même attention que s'il s'agissait du mien. Douceur, rigueur et réactivité ne sont pas que des mots pour moi : c'est sincèrement ce que je mets dans chaque mission.",
     personalNote:
@@ -42,11 +42,11 @@ export const portfolioProfile = {
   schedule: {
     timezone: "East Africa Time (EAT)",
     timezoneOffset: "UTC+3",
-    summary: "Mardi (08:00 - 12:00) • Mercredi (09:00 - 15:00) • Jeudi (09:00 - 12:00)",
+    summary: "Mardi (08:00 - 11:30) • Mercredi (09:00 - 14:30) • Jeudi (09:00 - 11:30)",
     activeDays: [
-      { day: "Mardi", hours: "08:00 - 12:00", active: true },
-      { day: "Mercredi", hours: "09:00 - 15:00", active: true },
-      { day: "Jeudi", hours: "09:00 - 12:00", active: true },
+      { day: "Mardi", hours: "08:00 - 11:30", active: true },
+      { day: "Mercredi", hours: "09:00 - 14:30", active: true },
+      { day: "Jeudi", hours: "09:00 - 11:30", active: true },
     ],
   },
 };
