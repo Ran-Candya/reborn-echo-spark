@@ -75,7 +75,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking, onOpenSchedule }) => 
               className="w-full sm:w-auto inline-flex min-h-12 items-center justify-center gap-2 sm:gap-2.5 px-4 sm:px-7 py-3 sm:py-3.5 rounded-2xl sm:rounded-full text-xs sm:text-sm font-semibold text-[#FDFBF7] bg-[#2D241E] hover:bg-[#3E3228] shadow-lg shadow-[#2D241E]/20 hover:shadow-xl hover:shadow-[#2D241E]/25 hover:-translate-y-0.5 active:translate-y-0 transition-all cursor-pointer text-center"
             >
               <Calendar className="w-4 h-4 text-[#E0A97E] shrink-0" />
-              <span>Réserver mon échange 20 min • Diagnostic gratuit</span>
+              <span>Réserver mon échange 30 min • Diagnostic gratuit</span>
               <ArrowRight className="w-4 h-4 opacity-80 shrink-0" />
             </button>
 

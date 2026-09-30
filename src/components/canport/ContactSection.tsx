@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { portfolioProfile, servicePlans, getCalendlyUrl } from '../../data/portfolioData';
-import { Mail, Calendar, Linkedin, Send, CheckCircle2, RotateCcw, Sparkles, ExternalLink, ShieldCheck, Clock, Loader2 } from 'lucide-react';
-import { RichTextEditor } from './RichTextEditor';
+import { Mail, Calendar, Linkedin, Send, CheckCircle2, RotateCcw, Sparkles, ExternalLink, Clock, Loader2, ChevronDown } from 'lucide-react';
 
 interface ContactSectionProps {
   onOpenBooking?: (plan?: string) => void;
@@ -11,7 +10,6 @@ interface ContactSectionProps {
 export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking }) => {
   const [selectedPlan, setSelectedPlan] = useState<string>('Organisation Administrative');
   const [submitted, setSubmitted] = useState(false);
-  const [submittedHtml, setSubmittedHtml] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [formData, setFormData] = useState({
@@ -24,19 +22,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.needs.trim()) {
-      setErrorMessage('Veuillez renseigner votre message dans l’éditeur avant d’envoyer.');
+      setErrorMessage('Veuillez renseigner votre message avant d’envoyer.');
       return;
     }
     if (isRedirecting) return;
     setErrorMessage('');
     setIsRedirecting(true);
-    const plainMessage = formData.needs
-      .replace(/<br\s*\/?\s*>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<[^>]*>/g, '')
-      .replace(/&nbsp;/g, ' ')
-      .trim();
-    const note = [formData.role.trim(), plainMessage].filter(Boolean).join(' — ');
+    const note = [formData.role.trim(), formData.needs.trim()].filter(Boolean).join(' — ');
     window.location.assign(getCalendlyUrl(selectedPlan, {
       name: formData.name.trim(),
       email: formData.email.trim(),
@@ -46,7 +38,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
 
   const handleReset = () => {
     setSubmitted(false);
-    setSubmittedHtml('');
     setIsRedirecting(false);
     setFormData({
       name: '',
@@ -80,16 +71,16 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
               Prêt·e à vous libérer de l'administratif ?
             </h2>
             <p className="text-sm sm:text-base text-[#635345] leading-relaxed">
-              Discutons de vos besoins actuels lors d'un appel découverte gratuit de 20 minutes, ou écrivez-moi directement par message.
+              Discutons de vos besoins actuels lors d'un appel découverte gratuit de 30 minutes, ou écrivez-moi directement par message.
             </p>
 
-            <div className="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-[#E8E1D5] space-y-3 sm:space-y-4 shadow-2xs hover:shadow-lg transition-all duration-300">
-              <div className="flex items-center gap-3.5 p-2 rounded-2xl hover:bg-white/70 transition-colors">
+            <div className="p-4 sm:p-7 rounded-2xl sm:rounded-3xl bg-[#FAF7F2] border border-[#E8E1D5] space-y-1 shadow-2xs hover:shadow-lg transition-all duration-300">
+              <div className="flex min-h-14 items-center gap-3.5 px-2 py-1.5 rounded-2xl hover:bg-white/70 transition-colors">
                 <div className="w-10 h-10 rounded-2xl bg-white border border-[#E8E1D5] flex items-center justify-center text-[#7A583E] shadow-2xs shrink-0">
                   <Calendar className="w-4 h-4 text-[#8F6544]" />
                 </div>
                 <div className="min-w-0">
-                  <span className="text-xs text-[#8A7969] block">Appel découverte offert (20 min)</span>
+                  <span className="text-xs text-[#8A7969] block">Appel découverte offert (30 min)</span>
                   <button
                     type="button"
                     onClick={() => onOpenBooking?.(selectedPlan)}
@@ -100,7 +91,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                 </div>
               </div>
 
-              <div className="flex items-center gap-3.5 p-2 rounded-2xl hover:bg-white/70 transition-colors">
+              <div className="flex min-h-14 items-center gap-3.5 px-2 py-1.5 rounded-2xl hover:bg-white/70 transition-colors">
                 <div className="w-10 h-10 rounded-2xl bg-white border border-[#E8E1D5] flex items-center justify-center text-[#7A583E] shadow-2xs shrink-0">
                   <Mail className="w-4 h-4 text-[#8F6544]" />
                 </div>
@@ -108,14 +99,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                   <span className="text-xs text-[#8A7969] block">Email direct</span>
                   <a
                     href={`mailto:${portfolioProfile.links.email}`}
-                    className="inline-flex min-h-11 items-center break-all text-xs sm:text-sm font-bold text-[#2D241E] hover:text-[#7A583E] transition-colors"
+                    className="mt-0.5 block break-all text-xs sm:text-sm font-bold leading-snug text-[#2D241E] hover:text-[#7A583E] transition-colors"
                   >
                     {portfolioProfile.links.email}
                   </a>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3.5 p-2 rounded-2xl hover:bg-white/70 transition-colors">
+              <div className="flex min-h-14 items-center gap-3.5 px-2 py-1.5 rounded-2xl hover:bg-white/70 transition-colors">
                 <div className="w-10 h-10 rounded-2xl bg-white border border-[#E8E1D5] flex items-center justify-center text-[#7A583E] shadow-2xs shrink-0">
                   <Linkedin className="w-4 h-4 text-[#8F6544]" />
                 </div>
@@ -125,7 +116,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                     href={portfolioProfile.links.linkedin}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center text-xs sm:text-sm font-bold text-[#2D241E] hover:text-[#7A583E] transition-colors"
+                    className="mt-0.5 block text-xs sm:text-sm font-bold leading-snug text-[#2D241E] hover:text-[#7A583E] transition-colors"
                   >
                     Profil LinkedIn de Candya
                   </a>
@@ -259,7 +250,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                       <span>Vous souhaitez aller plus vite ?</span>
                     </div>
                     <p className="text-xs text-[#635345] leading-relaxed">
-                      Planifiez dès à présent votre échange découverte gratuit de 20 minutes sur Calendly avec la formule <strong>{selectedPlan}</strong> :
+                      Planifiez dès à présent votre échange découverte gratuit de 30 minutes sur Calendly avec la formule <strong>{selectedPlan}</strong> :
                     </p>
                     <a
                       href={calendlyUrlWithPlan}
@@ -272,24 +263,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                       <ExternalLink className="w-3.5 h-3.5 opacity-80" />
                     </a>
                   </motion.div>
-
-                  {/* Rendered HTML note preview */}
-                  {submittedHtml && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.65 }}
-                      className="text-left mt-5 pt-4 border-t border-emerald-100 max-w-md mx-auto relative z-10"
-                    >
-                      <span className="text-[11px] font-bold text-[#7A583E] uppercase tracking-wider block mb-2">
-                        Aperçu de votre message :
-                      </span>
-                      <div
-                        className="p-3.5 rounded-2xl bg-white border border-[#E6DDD0] text-xs text-[#2D241E] leading-relaxed rich-text-content shadow-2xs max-h-36 overflow-y-auto"
-                        dangerouslySetInnerHTML={{ __html: submittedHtml }}
-                      />
-                    </motion.div>
-                  )}
 
                   <div className="mt-6 pt-2 relative z-10">
                     <button
@@ -306,41 +279,24 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Plan / Subject selector */}
                   <div>
-                    <label className="text-xs font-bold text-[#3E3228] block mb-2">
+                    <label htmlFor="contact-plan" className="text-xs font-bold text-[#3E3228] block mb-2">
                       Formule ou besoin ciblé
                     </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                      {servicePlans.map((plan) => {
-                        const isSelected = selectedPlan === plan.name;
-                        return (
-                          <button
-                            key={plan.id}
-                            type="button"
-                            onClick={() => setSelectedPlan(plan.name)}
-                            className={`p-2.5 rounded-xl text-left border transition-all cursor-pointer flex items-center justify-between ${
-                              isSelected
-                                ? 'bg-[#2D241E] text-white border-[#2D241E] shadow-2xs'
-                                : 'bg-[#FAF7F2] text-[#4A3F35] border-[#E8DFD3] hover:border-[#C4B3A1] hover:bg-white'
-                            }`}
-                          >
-                            <div className="min-w-0 pr-1">
-                              <span className="block text-xs font-bold truncate">
-                                {plan.name}
-                              </span>
-                              <span className={`block text-[10px] mt-0.5 truncate ${
-                                isSelected ? 'text-[#D5C2B1]' : 'text-[#7A695B]'
-                              }`}>
-                                {plan.badge}
-                              </span>
-                            </div>
-                            {isSelected ? (
-                              <CheckCircle2 className="w-4 h-4 text-[#E0A97E] shrink-0" />
-                            ) : (
-                              <span className="w-2 h-2 rounded-full bg-[#E5DDD2] shrink-0" />
-                            )}
-                          </button>
-                        );
-                      })}
+                    <div className="relative">
+                      <select
+                        id="contact-plan"
+                        name="plan"
+                        value={selectedPlan}
+                        onChange={(e) => setSelectedPlan(e.target.value)}
+                        className="min-h-11 w-full appearance-none rounded-2xl border border-[#E6DDD0] bg-[#FAF7F2] px-4 py-2.5 pr-11 text-xs font-semibold text-[#2D241E] transition-all focus:border-[#7A583E] focus:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#A87C51]/30 sm:text-sm"
+                      >
+                        {servicePlans.map((plan) => (
+                          <option key={plan.id} value={plan.name}>
+                            {plan.name} — {plan.badge}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7A583E]" aria-hidden="true" />
                     </div>
                   </div>
 
@@ -389,27 +345,27 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                   </div>
 
                   <div>
-                    <div className="grid grid-cols-1 gap-1 mb-1 sm:flex sm:items-center sm:justify-between">
-                      <label className="text-xs font-bold text-[#3E3228] block">
+                    <div className="mb-1">
+                      <label htmlFor="contact-needs" className="text-xs font-bold text-[#3E3228] block">
                         Ce qui vous pèse aujourd'hui <span className="text-red-500">*</span>
                       </label>
-                      <span className="text-[10px] sm:text-[11px] text-[#8A7969] font-medium">
-                        Éditeur enrichi & redimensionnable
-                      </span>
                     </div>
 
-                    <RichTextEditor
-                      id="contact-needs-editor"
+                    <textarea
+                      id="contact-needs"
+                      name="needs"
+                      required
+                      rows={6}
                       value={formData.needs}
-                      onChange={(html) => {
-                        setFormData((prev) => ({ ...prev, needs: html }));
-                        if (html.trim() && errorMessage) {
+                      onChange={(e) => {
+                        const needs = e.target.value;
+                        setFormData((prev) => ({ ...prev, needs }));
+                        if (needs.trim() && errorMessage) {
                           setErrorMessage('');
                         }
                       }}
-                      placeholder="Gestion des emails, retard de facturation, suivi des clients... Vous pouvez formater en gras, italique, surligner et insérer des listes !"
-                      minHeight={150}
-                      maxHeight={500}
+                      placeholder="Gestion des emails, retard de facturation, suivi des clients..."
+                      className="w-full resize-none rounded-2xl border border-[#E6DDD0] bg-[#FAF7F2] px-4 py-3 text-xs leading-relaxed text-[#2D241E] transition-all placeholder:text-[#9A8A7B] focus:border-[#7A583E] focus:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#A87C51]/30 sm:text-sm"
                     />
 
                     {errorMessage && (

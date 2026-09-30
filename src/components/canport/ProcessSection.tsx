@@ -82,7 +82,7 @@ export const ProcessSection: React.FC<ProcessSectionProps> = ({ onOpenBooking })
             className="inline-flex w-full sm:w-auto items-center justify-center gap-2.5 px-5 sm:px-8 py-3.5 rounded-2xl sm:rounded-full text-sm font-bold text-[#FDFBF7] bg-[#2D241E] hover:bg-[#3E3228] active:scale-95 shadow-md hover:shadow-xl transition-all cursor-pointer group"
           >
             <Calendar className="w-4 h-4 text-[#E0A97E] group-hover:rotate-12 transition-transform duration-300" />
-            <span>Réserver l'appel découverte de 20 min</span>
+            <span>Réserver l'appel découverte de 30 min</span>
             <ArrowRight className="w-4 h-4 opacity-80 group-hover:translate-x-1 transition-transform" />
           </button>
         </motion.div>
