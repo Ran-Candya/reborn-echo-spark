@@ -8,9 +8,10 @@ interface ContactSectionProps {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking }) => {
-  const [selectedPlan, setSelectedPlan] = useState<string>('Organisation Administrative');
+  const [selectedPlan, setSelectedPlan] = useState<string>('');
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [validationAttempted, setValidationAttempted] = useState(false);
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -21,8 +22,13 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.needs.trim()) {
-      setErrorMessage('Veuillez renseigner votre message avant d’envoyer.');
+    setValidationAttempted(true);
+    const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim());
+    const hasEmptyField = !selectedPlan || !formData.name.trim() || !formData.email.trim() || !formData.role.trim() || !formData.needs.trim();
+    if (hasEmptyField || !emailIsValid) {
+      setErrorMessage(hasEmptyField
+        ? 'Veuillez remplir tous les champs avant d’envoyer.'
+        : 'Veuillez saisir une adresse email valide.');
       return;
     }
     if (isRedirecting) return;
@@ -39,6 +45,9 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
   const handleReset = () => {
     setSubmitted(false);
     setIsRedirecting(false);
+    setValidationAttempted(false);
+    setSelectedPlan('');
+    setErrorMessage('');
     setFormData({
       name: '',
       email: '',
@@ -51,6 +60,11 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
     name: formData.name,
     email: formData.email,
   });
+  const planInvalid = validationAttempted && !selectedPlan;
+  const nameInvalid = validationAttempted && !formData.name.trim();
+  const emailInvalid = validationAttempted && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()));
+  const roleInvalid = validationAttempted && !formData.role.trim();
+  const needsInvalid = validationAttempted && !formData.needs.trim();
 
   return (
     <section id="contact" className="py-14 sm:py-20 md:py-28 bg-[#FDFBF7] border-t border-[#EAE3D8] scroll-mt-20">
@@ -83,10 +97,10 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                   <span className="text-xs text-[#8A7969] block">Appel découverte offert (30 min)</span>
                   <button
                     type="button"
-                    onClick={() => onOpenBooking?.(selectedPlan)}
+                    onClick={() => onOpenBooking?.(selectedPlan || undefined)}
                     className="break-words text-xs sm:text-sm font-bold text-[#2D241E] hover:text-[#7A583E] underline decoration-[#E0A97E] underline-offset-4 active:scale-95 transition-all cursor-pointer text-left"
                   >
-                    Choisir un créneau sur mon agenda ({selectedPlan})
+                    Choisir un créneau sur mon agenda{selectedPlan ? ` (${selectedPlan})` : ''}
                   </button>
                 </div>
               </div>
@@ -276,20 +290,26 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                   </div>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-4">
+                <form onSubmit={handleSubmit} noValidate className="space-y-4">
                   {/* Plan / Subject selector */}
                   <div>
                     <label htmlFor="contact-plan" className="text-xs font-bold text-[#3E3228] block mb-2">
-                      Formule ou besoin ciblé
+                      Formule ou besoin ciblé <span className="text-red-600">*</span>
                     </label>
                     <div className="relative">
                       <select
                         id="contact-plan"
                         name="plan"
+                        required
+                        aria-invalid={planInvalid}
                         value={selectedPlan}
-                        onChange={(e) => setSelectedPlan(e.target.value)}
-                        className="min-h-11 w-full appearance-none rounded-2xl border border-[#E6DDD0] bg-[#FAF7F2] px-4 py-2.5 pr-11 text-xs font-semibold text-[#2D241E] transition-all focus:border-[#7A583E] focus:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#A87C51]/30 sm:text-sm"
+                        onChange={(e) => {
+                          setSelectedPlan(e.target.value);
+                          if (e.target.value && errorMessage) setErrorMessage('');
+                        }}
+                        className={`min-h-11 w-full appearance-none rounded-2xl border bg-[#FAF7F2]/90 px-4 py-2.5 pr-11 text-xs font-semibold text-[#2D241E] backdrop-blur-md transition-all focus:bg-white focus:outline-hidden focus-visible:ring-2 sm:text-sm ${planInvalid ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-200' : 'border-[#E6DDD0] focus:border-[#7A583E] focus-visible:ring-[#A87C51]/30'}`}
                       >
+                        <option value="" disabled>Cliquez ici pour choisir une formule</option>
                         {servicePlans.map((plan) => (
                           <option key={plan.id} value={plan.name}>
                             {plan.name} — {plan.badge}
@@ -309,10 +329,15 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                         autoComplete="name"
                         type="text"
                         required
+                        maxLength={100}
+                        aria-invalid={nameInvalid}
                         value={formData.name}
-                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          if (e.target.value.trim() && errorMessage) setErrorMessage('');
+                        }}
                         placeholder="Ex: Sophie Martin"
-                        className="w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border border-[#E6DDD0] text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:border-[#7A583E] focus:bg-white transition-all"
+                        className={`w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:bg-white transition-all ${nameInvalid ? 'border-red-500 focus:border-red-600 ring-2 ring-red-100' : 'border-[#E6DDD0] focus:border-[#7A583E]'}`}
                       />
                     </div>
                     <div>
@@ -323,24 +348,35 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                         autoComplete="email"
                         type="email"
                         required
+                        maxLength={255}
+                        aria-invalid={emailInvalid}
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e.target.value.trim()) && errorMessage) setErrorMessage('');
+                        }}
                         placeholder="sophie@monbusiness.com"
-                        className="w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border border-[#E6DDD0] text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:border-[#7A583E] focus:bg-white transition-all"
+                        className={`w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:bg-white transition-all ${emailInvalid ? 'border-red-500 focus:border-red-600 ring-2 ring-red-100' : 'border-[#E6DDD0] focus:border-[#7A583E]'}`}
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="contact-role" className="text-xs font-bold text-[#3E3228] block mb-1">Votre activité & format d'accompagnement</label>
+                    <label htmlFor="contact-role" className="text-xs font-bold text-[#3E3228] block mb-1">Votre activité & format d'accompagnement <span className="text-red-600">*</span></label>
                     <input
                       id="contact-role"
                       name="role"
                       type="text"
+                      required
+                      maxLength={200}
+                      aria-invalid={roleInvalid}
                       value={formData.role}
-                      onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, role: e.target.value });
+                        if (e.target.value.trim() && errorMessage) setErrorMessage('');
+                      }}
                       placeholder="Ex: Coach certifiée, formatrice en ligne (200 élèves/an)..."
-                      className="w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border border-[#E6DDD0] text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:border-[#7A583E] focus:bg-white transition-all"
+                      className={`w-full px-4 py-2.5 rounded-2xl bg-[#FAF7F2] border text-xs sm:text-sm text-[#2D241E] focus:outline-hidden focus:bg-white transition-all ${roleInvalid ? 'border-red-500 focus:border-red-600 ring-2 ring-red-100' : 'border-[#E6DDD0] focus:border-[#7A583E]'}`}
                     />
                   </div>
 
@@ -355,6 +391,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                       id="contact-needs"
                       name="needs"
                       required
+                      maxLength={1000}
+                      aria-invalid={needsInvalid}
                       rows={6}
                       value={formData.needs}
                       onChange={(e) => {
@@ -365,7 +403,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                         }
                       }}
                       placeholder="Gestion des emails, retard de facturation, suivi des clients..."
-                      className="w-full resize-none rounded-2xl border border-[#E6DDD0] bg-[#FAF7F2] px-4 py-3 text-xs leading-relaxed text-[#2D241E] transition-all placeholder:text-[#9A8A7B] focus:border-[#7A583E] focus:bg-white focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#A87C51]/30 sm:text-sm"
+                      className={`w-full resize-none rounded-2xl border bg-[#FAF7F2] px-4 py-3 text-xs leading-relaxed text-[#2D241E] transition-all placeholder:text-[#9A8A7B] focus:bg-white focus:outline-hidden focus-visible:ring-2 sm:text-sm ${needsInvalid ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-200' : 'border-[#E6DDD0] focus:border-[#7A583E] focus-visible:ring-[#A87C51]/30'}`}
                     />
 
                     {errorMessage && (
