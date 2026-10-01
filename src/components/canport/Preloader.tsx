@@ -13,7 +13,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
       animate={{ opacity: 0 }}
       transition={{ delay: 0.65, duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
       onAnimationComplete={onComplete}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-[#FDFBF7] pointer-events-none"
+      className="fixed inset-x-0 bottom-0 top-[4.75rem] z-40 flex items-center justify-center bg-[#FDFBF7] pointer-events-none sm:top-24"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.96, y: 6 }}

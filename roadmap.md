@@ -19,3 +19,6 @@
 - [x] Mettre à jour la présentation, les appels de 30 minutes et les créneaux.
 - [x] Simplifier le formulaire de contact et aligner ses coordonnées.
 - [x] Vérifier les nouveaux contenus et interactions sur mobile et ordinateur.
+- [x] Garder la navigation accessible pendant le chargement initial.
+- [x] Rendre tous les champs de contact obligatoires avec erreurs visibles.
+- [x] Optimiser le chargement différé des images sous la ligne de flottaison.
