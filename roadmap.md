@@ -18,4 +18,4 @@
 - [ ] Vérifier les contrastes et états interactifs mobiles selon WCAG AA.
 - [x] Mettre à jour la présentation, les appels de 30 minutes et les créneaux.
 - [x] Simplifier le formulaire de contact et aligner ses coordonnées.
-- [ ] Vérifier les nouveaux contenus et interactions sur mobile et ordinateur.
+- [x] Vérifier les nouveaux contenus et interactions sur mobile et ordinateur.

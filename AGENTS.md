@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep discovery-call duration and weekly availability centralized in the portfolio data and booking configuration so every visible entry point stays consistent.
