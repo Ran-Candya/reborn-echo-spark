@@ -623,7 +623,7 @@ export const ProjectsSection: React.FC<ProjectsSectionProps> = ({ onOpenBooking 
                   src={zoomedScreenshot.screenshot.imageUrl}
                   alt={zoomedScreenshot.screenshot.title}
                   referrerPolicy="no-referrer"
-                  loading="eager"
+                  loading="lazy"
                   decoding="async"
                   className={`w-full max-h-[72vh] object-contain rounded-xl shadow-[0_20px_45px_rgba(63,49,37,0.16)] transition-opacity duration-500 ${loadedImages[zoomedScreenshot.screenshot.id] ? 'opacity-100' : 'opacity-0'}`}
                   onLoad={() => setLoadedImages((prev) => ({ ...prev, [zoomedScreenshot.screenshot.id]: true }))}
