@@ -22,3 +22,6 @@
 - [x] Garder la navigation accessible pendant le chargement initial.
 - [x] Rendre tous les champs de contact obligatoires avec erreurs visibles.
 - [x] Optimiser le chargement différé des images sous la ligne de flottaison.
+- [x] Remplacer les 10 logos de la section Environnement & Outils par les fichiers officiels fournis.
+- [ ] Remplacer les logos Trello et Stripe par les fichiers officiels (en attente des 2 fichiers de l'utilisatrice).
+- [x] Remplacer le sélecteur de formule natif par un menu personnalisé (clavier, Échap, clic extérieur).
