@@ -9,6 +9,11 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking }) => {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [planMenuOpen, setPlanMenuOpen] = useState(false);
+  const [activePlanIndex, setActivePlanIndex] = useState(0);
+  const planMenuRef = useRef<HTMLDivElement>(null);
+  const planTriggerRef = useRef<HTMLButtonElement>(null);
+  const activeOptionRef = useRef<HTMLLIElement>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [validationAttempted, setValidationAttempted] = useState(false);
