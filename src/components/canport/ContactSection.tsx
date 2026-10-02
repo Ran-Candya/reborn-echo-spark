@@ -66,6 +66,77 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
     email: formData.email,
   });
   const planInvalid = validationAttempted && !selectedPlan;
+
+  const selectedPlanIndex = servicePlans.findIndex((plan) => plan.name === selectedPlan);
+
+  const openPlanMenu = () => {
+    setActivePlanIndex(selectedPlanIndex >= 0 ? selectedPlanIndex : 0);
+    setPlanMenuOpen(true);
+  };
+
+  const choosePlan = (planName: string) => {
+    setSelectedPlan(planName);
+    setPlanMenuOpen(false);
+    planTriggerRef.current?.focus();
+    if (planName && errorMessage) setErrorMessage('');
+  };
+
+  const handlePlanTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!planMenuOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPlanMenu();
+      }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActivePlanIndex((i) => Math.min(i + 1, servicePlans.length - 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActivePlanIndex((i) => Math.max(i - 1, 0));
+        break;
+      case 'Home':
+        e.preventDefault();
+        setActivePlanIndex(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        setActivePlanIndex(servicePlans.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        if (servicePlans[activePlanIndex]) choosePlan(servicePlans[activePlanIndex].name);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setPlanMenuOpen(false);
+        planTriggerRef.current?.focus();
+        break;
+      case 'Tab':
+        setPlanMenuOpen(false);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (!planMenuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (planMenuRef.current && !planMenuRef.current.contains(e.target as Node)) {
+        setPlanMenuOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [planMenuOpen]);
+
+  useEffect(() => {
+    if (planMenuOpen) activeOptionRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [planMenuOpen, activePlanIndex]);
+
   const nameInvalid = validationAttempted && !formData.name.trim();
   const emailInvalid = validationAttempted && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()));
   const roleInvalid = validationAttempted && !formData.role.trim();
