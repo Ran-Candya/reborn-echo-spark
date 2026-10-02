@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { portfolioProfile, servicePlans, getCalendlyUrl } from '../../data/portfolioData';
 import { Mail, Calendar, Linkedin, Send, CheckCircle2, RotateCcw, Sparkles, ExternalLink, Clock, Loader2, ChevronDown } from 'lucide-react';
@@ -9,6 +9,11 @@ interface ContactSectionProps {
 
 export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking }) => {
   const [selectedPlan, setSelectedPlan] = useState<string>('');
+  const [planMenuOpen, setPlanMenuOpen] = useState(false);
+  const [activePlanIndex, setActivePlanIndex] = useState(0);
+  const planMenuRef = useRef<HTMLDivElement>(null);
+  const planTriggerRef = useRef<HTMLButtonElement>(null);
+  const activeOptionRef = useRef<HTMLLIElement>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [validationAttempted, setValidationAttempted] = useState(false);
@@ -61,6 +66,77 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
     email: formData.email,
   });
   const planInvalid = validationAttempted && !selectedPlan;
+
+  const selectedPlanIndex = servicePlans.findIndex((plan) => plan.name === selectedPlan);
+
+  const openPlanMenu = () => {
+    setActivePlanIndex(selectedPlanIndex >= 0 ? selectedPlanIndex : 0);
+    setPlanMenuOpen(true);
+  };
+
+  const choosePlan = (planName: string) => {
+    setSelectedPlan(planName);
+    setPlanMenuOpen(false);
+    planTriggerRef.current?.focus();
+    if (planName && errorMessage) setErrorMessage('');
+  };
+
+  const handlePlanTriggerKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (!planMenuOpen) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPlanMenu();
+      }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActivePlanIndex((i) => Math.min(i + 1, servicePlans.length - 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActivePlanIndex((i) => Math.max(i - 1, 0));
+        break;
+      case 'Home':
+        e.preventDefault();
+        setActivePlanIndex(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        setActivePlanIndex(servicePlans.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        if (servicePlans[activePlanIndex]) choosePlan(servicePlans[activePlanIndex].name);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setPlanMenuOpen(false);
+        planTriggerRef.current?.focus();
+        break;
+      case 'Tab':
+        setPlanMenuOpen(false);
+        break;
+    }
+  };
+
+  useEffect(() => {
+    if (!planMenuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (planMenuRef.current && !planMenuRef.current.contains(e.target as Node)) {
+        setPlanMenuOpen(false);
+      }
+    };
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => document.removeEventListener('pointerdown', onPointerDown);
+  }, [planMenuOpen]);
+
+  useEffect(() => {
+    if (planMenuOpen) activeOptionRef.current?.scrollIntoView({ block: 'nearest' });
+  }, [planMenuOpen, activePlanIndex]);
+
   const nameInvalid = validationAttempted && !formData.name.trim();
   const emailInvalid = validationAttempted && (!formData.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim()));
   const roleInvalid = validationAttempted && !formData.role.trim();
@@ -296,27 +372,73 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                     <label htmlFor="contact-plan" className="text-xs font-bold text-[#3E3228] block mb-2">
                       Formule ou besoin ciblé <span className="text-red-600">*</span>
                     </label>
-                    <div className="relative">
-                      <select
+                    <div className="relative" ref={planMenuRef}>
+                      <button
                         id="contact-plan"
-                        name="plan"
-                        required
+                        type="button"
+                        role="combobox"
+                        aria-haspopup="listbox"
+                        aria-expanded={planMenuOpen}
+                        aria-controls="contact-plan-listbox"
+                        aria-activedescendant={planMenuOpen ? `contact-plan-option-${activePlanIndex}` : undefined}
                         aria-invalid={planInvalid}
-                        value={selectedPlan}
-                        onChange={(e) => {
-                          setSelectedPlan(e.target.value);
-                          if (e.target.value && errorMessage) setErrorMessage('');
-                        }}
-                        className={`min-h-11 w-full appearance-none rounded-2xl border bg-[#FAF7F2]/90 px-4 py-2.5 pr-11 text-xs font-semibold text-[#2D241E] backdrop-blur-md transition-all focus:bg-white focus:outline-hidden focus-visible:ring-2 sm:text-sm ${planInvalid ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-200' : 'border-[#E6DDD0] focus:border-[#7A583E] focus-visible:ring-[#A87C51]/30'}`}
+                        ref={planTriggerRef}
+                        onClick={() => (planMenuOpen ? setPlanMenuOpen(false) : openPlanMenu())}
+                        onKeyDown={handlePlanTriggerKeyDown}
+                        className={`min-h-11 flex w-full items-center justify-between gap-3 rounded-2xl border px-4 py-2.5 text-left text-xs font-semibold backdrop-blur-md transition-all focus-visible:ring-2 sm:text-sm ${planInvalid ? 'border-red-500 focus:border-red-600 focus-visible:ring-red-200' : 'border-[#E6DDD0] focus:border-[#7A583E] focus-visible:ring-[#A87C51]/30'} ${selectedPlan ? 'text-[#2D241E]' : 'text-[#9A8A7B]'} ${planMenuOpen ? 'bg-white' : 'bg-[#FAF7F2]/90 hover:bg-[#F2ECE2]/90'}`}
                       >
-                        <option value="" disabled>Cliquez ici pour choisir une formule</option>
-                        {servicePlans.map((plan) => (
-                          <option key={plan.id} value={plan.name}>
-                            {plan.name} — {plan.badge}
-                          </option>
-                        ))}
-                      </select>
-                      <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#7A583E]" aria-hidden="true" />
+                        <span className="min-w-0 flex-1 truncate">
+                          {selectedPlan || 'Cliquez ici pour choisir une formule'}
+                        </span>
+                        <ChevronDown
+                          className={`pointer-events-none h-4 w-4 shrink-0 text-[#7A583E] transition-transform duration-200 ${planMenuOpen ? 'rotate-180' : ''}`}
+                          aria-hidden="true"
+                        />
+                      </button>
+                      <AnimatePresence>
+                        {planMenuOpen && (
+                          <motion.ul
+                            id="contact-plan-listbox"
+                            role="listbox"
+                            aria-labelledby="contact-plan"
+                            initial={{ opacity: 0, y: -6, scale: 0.98 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: -6, scale: 0.98 }}
+                            transition={{ duration: 0.16, ease: 'easeOut' }}
+                            className="absolute inset-x-0 top-[calc(100%+0.375rem)] z-50 max-h-64 overflow-auto rounded-2xl border border-[#E6DDD0] bg-[#FAF7F2]/95 p-1.5 shadow-xl backdrop-blur-md"
+                          >
+                            {servicePlans.map((plan, index) => {
+                              const isActive = index === activePlanIndex;
+                              const isSelected = plan.name === selectedPlan;
+                              return (
+                                <li
+                                  key={plan.id}
+                                  id={`contact-plan-option-${index}`}
+                                  role="option"
+                                  aria-selected={isSelected}
+                                  ref={isActive ? activeOptionRef : undefined}
+                                  onMouseEnter={() => setActivePlanIndex(index)}
+                                  onClick={() => choosePlan(plan.name)}
+                                  className={`flex cursor-pointer items-start justify-between gap-3 rounded-xl px-3.5 py-2.5 text-left transition-colors ${isActive ? 'bg-[#F2ECE2] text-[#2D241E]' : 'text-[#5C4D3E]'} ${isSelected ? 'font-bold' : 'font-semibold'}`}
+                                >
+                                  <span className="min-w-0 flex-1">
+                                    <span className="block truncate text-xs sm:text-sm">
+                                      {plan.name} — {plan.badge}
+                                    </span>
+                                    <span className="mt-0.5 block truncate text-[11px] font-normal text-[#8A7969]">
+                                      {plan.recommendedFor}
+                                    </span>
+                                  </span>
+                                  <CheckCircle2
+                                    className={`mt-0.5 h-4 w-4 shrink-0 text-[#A87C51] ${isSelected ? 'opacity-100' : 'opacity-0'}`}
+                                    aria-hidden="true"
+                                  />
+                                </li>
+                              );
+                            })}
+                          </motion.ul>
+                        )}
+                      </AnimatePresence>
                     </div>
                   </div>
 
