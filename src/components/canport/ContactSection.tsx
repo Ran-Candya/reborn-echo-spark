@@ -375,9 +375,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                     <div className="relative" ref={planMenuRef}>
                       <button
                         id="contact-plan"
-                        name="plan"
                         type="button"
-                        required
                         role="combobox"
                         aria-haspopup="listbox"
                         aria-expanded={planMenuOpen}
