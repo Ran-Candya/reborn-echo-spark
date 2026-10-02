@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { portfolioProfile, servicePlans, getCalendlyUrl } from '../../data/portfolioData';
 import { Mail, Calendar, Linkedin, Send, CheckCircle2, RotateCcw, Sparkles, ExternalLink, Clock, Loader2, ChevronDown } from 'lucide-react';
