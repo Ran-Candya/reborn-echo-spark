@@ -25,3 +25,5 @@
 - [x] Remplacer les 10 logos de la section Environnement & Outils par les fichiers officiels fournis.
 - [ ] Remplacer les logos Trello et Stripe par les fichiers officiels (en attente des 2 fichiers de l'utilisatrice).
 - [x] Remplacer le sélecteur de formule natif par un menu personnalisé (clavier, Échap, clic extérieur).
+- [x] Mettre à jour les champs de contact, la zone de message enrichie et les liens du bas de page.
+- [ ] Activer l'envoi automatique et sa confirmation (bloqué par l'absence de domaine d'expédition configuré).
