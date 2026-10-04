@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep discovery-call duration and weekly availability centralized in the portfolio data and booking configuration so every visible entry point stays consistent.
+- Send public contact messages only through a validated server-side email action after a verified sender domain is available, so the UI never claims delivery without a successful send.
