@@ -10,7 +10,7 @@ interface ContactMessageEditorProps {
 
 export function ContactMessageEditor({ value, onChange, invalid }: ContactMessageEditorProps) {
   const editorRef = useRef<HTMLDivElement>(null);
-  const [focused, setFocused] = useState(false);
+  const [activated, setActivated] = useState(false);
 
   const update = () => onChange(editorRef.current?.innerText.trim() ?? '');
   const format = (command: string) => {
@@ -21,7 +21,7 @@ export function ContactMessageEditor({ value, onChange, invalid }: ContactMessag
 
   return (
     <div className={`overflow-hidden rounded-2xl border bg-[#FAF7F2] transition-colors focus-within:bg-white ${invalid ? 'border-red-500' : 'border-[#E6DDD0] focus-within:border-[#7A583E]'}`}>
-      {focused && (
+      {activated && (
         <div className="flex items-center gap-1 border-b border-[#E6DDD0] px-2 py-1.5" role="toolbar" aria-label="Mise en forme du message">
           {[
             { title: 'Gras', icon: Bold, command: 'bold' },
@@ -39,8 +39,8 @@ export function ContactMessageEditor({ value, onChange, invalid }: ContactMessag
       <div className="relative px-4 py-3">
         {!value && <span aria-hidden="true" className="pointer-events-none absolute left-4 top-3 text-xs text-[#9A8A7B] sm:text-sm">Gestion des emails, retard de facturation, suivi des clients...</span>}
         <div ref={editorRef} id="contact-needs" role="textbox" aria-multiline="true" aria-required="true" aria-invalid={invalid}
-          contentEditable suppressContentEditableWarning data-placeholder="Gestion des emails, retard de facturation, suivi des clients..."
-          onFocus={() => setFocused(true)} onBlur={(event) => { if (!event.currentTarget.parentElement?.parentElement?.contains(event.relatedTarget as Node)) setFocused(false); }}
+          contentEditable suppressContentEditableWarning
+          onFocus={() => setActivated(true)}
           onInput={update} className="min-h-32 w-full outline-none text-xs leading-relaxed text-[#2D241E] sm:text-sm" />
       </div>
     </div>
