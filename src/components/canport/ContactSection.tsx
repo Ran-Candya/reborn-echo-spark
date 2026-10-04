@@ -20,7 +20,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
   const [submitted, setSubmitted] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [validationAttempted, setValidationAttempted] = useState(false);
-  const [sending, setSending] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,23 +38,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
         : 'Veuillez saisir une adresse email valide.');
       return;
     }
-    if (sending) return;
     // Sending cannot be confirmed until a verified sender domain is connected.
     setErrorMessage("L’envoi automatique n’est pas encore disponible. Merci d’utiliser l’adresse e-mail directe en attendant.");
-  };
-
-  const handleReset = () => {
-    setSubmitted(false);
-    setSending(false);
-    setValidationAttempted(false);
-    setSelectedPlan('');
-    setErrorMessage('');
-    setFormData({
-      name: '',
-      email: '',
-      role: '',
-      needs: '',
-    });
   };
 
   const calendlyUrlWithPlan = getCalendlyUrl(selectedPlan, {
@@ -188,7 +172,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                     {portfolioProfile.links.email}
                   </span>
                 </div>
-              </div>
+              </a>
 
               <div className="flex min-h-14 items-center gap-3.5 px-2 py-1.5 rounded-2xl hover:bg-white/70 transition-colors">
                 <div className="w-10 h-10 rounded-2xl bg-white border border-[#E8E1D5] flex items-center justify-center text-[#7A583E] shadow-2xs shrink-0">
@@ -392,8 +376,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onOpenBooking })
                   <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
                     <Button
                       type="submit"
-                      disabled={sending}
-                      aria-busy={sending}
                       className="w-full sm:flex-1 py-3.5 px-6 rounded-full bg-[#2D241E] hover:bg-[#3E3228] active:scale-95 text-white text-xs sm:text-sm font-bold flex items-center justify-center gap-2 shadow-sm hover:shadow-lg transition-all cursor-pointer disabled:cursor-wait disabled:opacity-70"
                     >
                        
